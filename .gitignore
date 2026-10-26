@@ -66,3 +66,6 @@ coverage/
 
 # temp files for fdroid pubspec.lock
 /tmpfdroid/
+
+# Atlas: images written by failing golden tests
+test/failures/
