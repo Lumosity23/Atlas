@@ -1,5 +1,8 @@
 # Prompt : brainstorming sur le « cerveau de connaissances » (Atlas)
 
+> **Obsolète (2026-10-26).** Ce prompt partait du premier cadrage, abandonné. Le cadrage actuel
+> est dans le dépôt Pensay, `docs/ATLAS.md`. Voir `ARCHITECTURE.md`.
+
 Copie tout ce qui suit la ligne ci-dessous dans un agent IA.
 
 ---
