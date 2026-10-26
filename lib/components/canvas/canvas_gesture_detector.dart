@@ -7,6 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keybinder/keybinder.dart';
+import 'package:saber/atlas/multi_finger_tap.dart';
 import 'package:saber/components/canvas/hud/canvas_hud.dart';
 import 'package:saber/components/canvas/interactive_canvas.dart';
 import 'package:saber/data/editor/page.dart';
@@ -418,7 +419,17 @@ class CanvasGestureDetectorState extends State<CanvasGestureDetector> {
         transformation;
   }
 
+  // Atlas: a two-finger tap undoes, a three-finger tap redoes.
+  late final _multiFingerTap = MultiFingerTapDetector(
+    onTap: (fingerCount) => switch (fingerCount) {
+      2 => widget.undo(),
+      3 => widget.redo(),
+      _ => null,
+    },
+  );
+
   void _listenerPointerEvent(PointerEvent event) {
+    _multiFingerTap.handleEvent(event);
     final isStylus =
         event.kind == PointerDeviceKind.stylus ||
         event.kind == PointerDeviceKind.invertedStylus;
@@ -477,6 +488,7 @@ class CanvasGestureDetectorState extends State<CanvasGestureDetector> {
   }
 
   void _listenerPointerUpEvent(PointerEvent event) {
+    _multiFingerTap.handleEvent(event);
     widget.updatePointerData(event.kind, null);
     if (stylusButtonWasPressed) {
       stylusButtonWasPressed = false;
@@ -494,6 +506,7 @@ class CanvasGestureDetectorState extends State<CanvasGestureDetector> {
           onPointerDown: _listenerPointerEvent,
           onPointerMove: _listenerPointerEvent,
           onPointerUp: _listenerPointerUpEvent,
+          onPointerCancel: _multiFingerTap.handleEvent,
           onPointerHover: _listenerPointerHoverEvent,
           child: GestureDetector(
             child: LayoutBuilder(
