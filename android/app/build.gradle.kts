@@ -28,7 +28,8 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.adilhanney.saber"
+        // Atlas: its own id, so it installs beside Saber and never touches its notes.
+        applicationId = "com.lumosity23.atlas"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion

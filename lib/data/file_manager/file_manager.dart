@@ -12,6 +12,7 @@ import 'package:logging/logging.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:saber/atlas/identity.dart';
 import 'package:saber/components/home/sort_button.dart';
 import 'package:saber/data/nextcloud/saber_syncer.dart';
 import 'package:saber/data/prefs.dart';
@@ -79,8 +80,10 @@ class FileManager {
   static Future<String> getDocumentsDirectory() async =>
       stows.customDataDir.value ?? await getDefaultDocumentsDirectory();
 
+  /// On Linux and Windows the documents directory is shared between apps:
+  /// Atlas keeps its own folder so it never opens Saber's notes.
   static Future<String> getDefaultDocumentsDirectory() async =>
-      '${(await getApplicationDocumentsDirectory()).path}/$appRootDirectoryPrefix';
+      '${(await getApplicationDocumentsDirectory()).path}/$atlasNotesFolder';
 
   static Future<void> migrateDataDir() async {
     final oldDir = Directory(documentsDirectory);

@@ -14,6 +14,8 @@ import 'package:path/path.dart' as p;
 import 'package:path_to_regexp/path_to_regexp.dart';
 import 'package:pdfrx/pdfrx.dart';
 import 'package:printing/printing.dart';
+import 'package:saber/atlas/identity.dart';
+import 'package:saber/atlas/stylus_probe.dart';
 import 'package:saber/components/canvas/pencil_shader.dart';
 import 'package:saber/components/theming/dynamic_material_app.dart';
 import 'package:saber/data/file_manager/file_manager.dart';
@@ -123,8 +125,10 @@ Future<void> appRunner(List<String> args) async {
 
   HttpOverrides.global = NcHttpOverrides();
   runApp(SentryWidget(child: TranslationProvider(child: const App())));
-  startSyncAfterLoaded();
-  setupBackgroundSync();
+  if (atlasNextcloudSyncEnabled) {
+    startSyncAfterLoaded();
+    setupBackgroundSync();
+  }
 }
 
 void startSyncAfterLoaded() async {
@@ -259,6 +263,8 @@ class const App({super.key}) extends StatefulWidget {
       ),
       GoRoute(
         path: RoutePaths.login,
+        redirect: (context, state) =>
+            atlasNextcloudSyncEnabled ? null : initialLocation,
         builder: (context, state) => const NcLoginPage(),
       ),
       GoRoute(path: '/profile', redirect: (context, state) => RoutePaths.login),
@@ -338,7 +344,8 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return DynamicMaterialApp(title: 'Saber', router: App._router);
+    final app = DynamicMaterialApp(title: 'Atlas', router: App._router);
+    return stylusProbeEnabled ? StylusProbe(child: app) : app;
   }
 
   @override
