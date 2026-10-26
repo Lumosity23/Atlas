@@ -42,8 +42,10 @@ APK pour la tablette (sur une machine avec le SDK Android) :
 flutter build apk --release
 ```
 
-Saber signe aussi ses builds de debug avec la clé de release : il faut un fichier
-`android/key.properties` qui pointe vers ta propre clé (voir `android/app/build.gradle.kts`).
+Sans `android/key.properties`, l'APK est signé avec la clé de secours de Saber
+(`android/fallback-key.properties`), publique puisqu'elle est dans le dépôt. Ça suffit pour tester.
+Pour l'usage quotidien, crée ta propre clé et un `android/key.properties` (non versionné) qui la
+désigne : avec une clé publique, n'importe qui pourrait signer une mise à jour de ton app.
 
 **Sonde du double tap du stylet** (A0, partie C) : un APK qui affiche en bas de l'écran le type
 d'événement reçu quand on tape deux fois sur le stylet. Aucun contenu de note n'est affiché ni
