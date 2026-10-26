@@ -1,3 +1,0 @@
-# atlas
-
-Personal workspace.
